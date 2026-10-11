@@ -2,11 +2,14 @@ import React, {useState} from 'react';
 import {View, Text, StyleSheet, ScrollView, SafeAreaView, TouchableOpacity, Modal, TextInput, Alert} from 'react-native';
 import {COLORS, SIZES} from '../constants/theme';
 import ScreenIntro from '../components/ScreenIntro';
+import ModeSwitch from '../components/ModeSwitch';
+import {useMode} from '../context/ModeContext';
 import ScheduleCard from '../components/ScheduleCard';
 
 const DAYS_SHORT = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
 
 const FeedingScheduleScreen = () => {
+  const {isDemo}=useMode();
   const [schedules, setSchedules] = useState([
     {id: '1', time: '07:00 AM', amount: 1.5, days: [1, 2, 3, 4, 5], enabled: true},
     {id: '2', time: '06:00 PM', amount: 1.5, days: [1, 2, 3, 4, 5, 6, 7], enabled: true},
@@ -28,12 +31,14 @@ const FeedingScheduleScreen = () => {
   const [formPeriod, setFormPeriod] = useState('AM');
 
   const openAdd = () => {
+    if(!isDemo)return Alert.alert('Actual mode','Schedule editing is unavailable until hardware integration.');
     setEditId(null);
     setFormTime('08:00'); setFormAmount('1'); setFormDays([1, 2, 3, 4, 5, 6, 7]); setFormPeriod('AM');
     setModal(true);
   };
 
   const openEdit = (s) => {
+    if(!isDemo)return;
     setEditId(s.id);
     const [t, p] = s.time.split(' ');
     setFormTime(t); setFormAmount(String(s.amount)); setFormDays(s.days); setFormPeriod(p);
@@ -41,6 +46,9 @@ const FeedingScheduleScreen = () => {
   };
 
   const handleSave = () => {
+    if(!isDemo)return Alert.alert('Actual mode','Connect and verify the Raspberry Pi before modifying real schedules.');
+    const timeOk=/^(0?[1-9]|1[0-2]):[0-5][0-9]$/.test(formTime.trim());
+    if(!timeOk||!Number.isFinite(Number(formAmount))||Number(formAmount)<=0||formDays.length===0)return Alert.alert('Invalid schedule','Choose a valid 12-hour time, positive servings, and at least one day.');
     if (editId) {
       setSchedules((p) => p.map((s) => s.id === editId ? {...s, time: `${formTime} ${formPeriod}`, amount: parseFloat(formAmount), days: formDays} : s));
     } else {
@@ -50,6 +58,7 @@ const FeedingScheduleScreen = () => {
   };
 
   const handleDelete = (id) => {
+    if(!isDemo)return;
     Alert.alert('Delete Schedule', 'Are you sure?', [
       {text: 'Cancel', style: 'cancel'},
       {text: 'Delete', style: 'destructive', onPress: () => setSchedules((p) => p.filter((s) => s.id !== id))},
@@ -64,14 +73,14 @@ const FeedingScheduleScreen = () => {
   return (
     <SafeAreaView style={styles.safe}>
       <ScrollView contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
-        <ScreenIntro title="Feeding Schedule" subtitle="Plan Snoopy’s meals" />
+        <ScreenIntro title="Feeding Schedule" subtitle="Plan Snoopy’s meals" /><ModeSwitch/>
         <Text style={styles.sub}>Local schedule preview — not synced to Raspberry Pi</Text>
 
         <View style={styles.summary}>
           {[
             ['Active', String(activeCount)],
             ['Servings', String(totalServings)],
-            ['Mode', 'Demo'],
+            ['Mode', isDemo?'Demo':'Actual'],
           ].map(([l, v]) => (
             <View key={l} style={styles.summaryItem}>
               <Text style={styles.summaryVal}>{v}</Text>
@@ -87,7 +96,7 @@ const FeedingScheduleScreen = () => {
           </TouchableOpacity>
         </View>
 
-        {schedules.length === 0 ? (
+        {!isDemo ? <View style={styles.empty}><Text style={styles.emptyTitle}>Actual schedules unavailable</Text><Text style={styles.emptyText}>Connect Raspberry Pi to load schedules.</Text></View> : schedules.length === 0 ? (
           <View style={styles.empty}>
             <Text style={styles.emptyIcon}>⏰</Text>
             <Text style={styles.emptyTitle}>No schedules yet</Text>
@@ -98,7 +107,7 @@ const FeedingScheduleScreen = () => {
         ))}
 
         <Text style={[styles.sectionTitle, {marginTop: SIZES.padding}]}>Example history (not device logs)</Text>
-        {logs.map((l) => (
+        {isDemo && logs.map((l) => (
           <View key={l.id} style={styles.logItem}>
             <View style={styles.logLeft}>
               <View style={[styles.logIcon, {backgroundColor: l.type === 'Manual' ? COLORS.primary + '10' : COLORS.success + '10'}]}>
