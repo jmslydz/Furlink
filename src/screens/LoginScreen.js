@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import {View, Text, TextInput, StyleSheet, TouchableOpacity, KeyboardAvoidingView, Platform, ScrollView, ActivityIndicator} from 'react-native';
 import {COLORS, SIZES} from '../constants/theme';
 import {useAuth} from '../context/AuthContext';
+import AnimatedPup from '../components/AnimatedPup';
 
 const LoginScreen = ({navigation}) => {
   const {signIn} = useAuth();
@@ -12,7 +13,7 @@ const LoginScreen = ({navigation}) => {
 
   const handleLogin = async () => {
     setError('');
-    if (!email.trim()) return setError('Enter your username');
+    if (!email.trim()) return setError('Enter your email');
     if (!password.trim()) return setError('Enter your password');
     setLoading(true);
     const res = await signIn(email.toLowerCase().trim(), password);
@@ -24,11 +25,9 @@ const LoginScreen = ({navigation}) => {
     <KeyboardAvoidingView style={styles.flex} behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
       <ScrollView contentContainerStyle={styles.container} keyboardShouldPersistTaps="handled">
         <View style={styles.top}>
-          <View style={styles.logo}>
-            <Text style={styles.logoIcon}>🐕</Text>
-          </View>
-          <Text style={styles.title}>Smart Dog Care</Text>
-          <Text style={styles.sub}>IoT Dog Cage Monitoring</Text>
+          <AnimatedPup size={132} />
+          <Text style={styles.title}>Welcome back</Text>
+          <Text style={styles.sub}>Sign in to Furlink</Text>
         </View>
 
         <View style={styles.form}>
@@ -40,10 +39,10 @@ const LoginScreen = ({navigation}) => {
           ) : null}
 
           <View style={styles.inputGroup}>
-            <Text style={styles.label}>Username</Text>
+            <Text style={styles.label}>Email</Text>
             <TextInput
               style={styles.input}
-              placeholder="admin"
+              placeholder="Email address"
               placeholderTextColor={COLORS.textTertiary}
               value={email}
               onChangeText={(t) => {setEmail(t); setError('');}}
@@ -90,7 +89,7 @@ const LoginScreen = ({navigation}) => {
 const styles = StyleSheet.create({
   flex: {flex: 1, backgroundColor: COLORS.background},
   container: {flexGrow: 1, justifyContent: 'center', padding: SIZES.padding},
-  top: {alignItems: 'center', marginBottom: 40},
+  top: {alignItems: 'center', marginBottom: 28},
   logo: {
     width: 72, height: 72, borderRadius: 20,
     backgroundColor: COLORS.primary + '12',
@@ -100,7 +99,7 @@ const styles = StyleSheet.create({
   logoIcon: {fontSize: 36},
   title: {fontSize: 28, fontWeight: '800', color: COLORS.text, letterSpacing: -0.5},
   sub: {fontSize: SIZES.fontSm, color: COLORS.textSecondary, marginTop: 4},
-  form: {backgroundColor: COLORS.card, borderRadius: SIZES.radiusSm, padding: SIZES.padding, borderWidth: 1, borderColor: COLORS.cardBorder},
+  form: {backgroundColor: 'transparent', borderRadius: SIZES.radiusSm, padding: SIZES.padding, borderWidth: 0},
   errorBox: {flexDirection: 'row', alignItems: 'center', backgroundColor: COLORS.danger + '08', padding: 10, borderRadius: SIZES.radiusXs, marginBottom: SIZES.margin},
   errorIcon: {fontSize: 14, marginRight: 8},
   errorText: {flex: 1, fontSize: SIZES.fontSm, color: COLORS.danger, fontWeight: '500'},
@@ -113,8 +112,8 @@ const styles = StyleSheet.create({
     borderWidth: 1, borderColor: COLORS.cardBorder,
   },
   btn: {
-    backgroundColor: COLORS.primary, height: SIZES.btnHeight,
-    borderRadius: SIZES.radiusXs, justifyContent: 'center', alignItems: 'center',
+    backgroundColor: COLORS.primaryDark, height: SIZES.btnHeight,
+    borderRadius: 25, justifyContent: 'center', alignItems: 'center',
     marginTop: SIZES.marginSm,
   },
   btnDisabled: {opacity: 0.6},
