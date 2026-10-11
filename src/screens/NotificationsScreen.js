@@ -32,7 +32,7 @@ const NotificationsScreen = () => {
     <SafeAreaView style={styles.safe}>
       <View style={styles.header}>
         <View>
-          <Text style={styles.title}>Notifications</Text>
+          <Text style={styles.title}>Notifications</Text><Text style={styles.sub}>Sample alerts — not live hardware events</Text>
           <Text style={styles.sub}>{unread > 0 ? `${unread} unread` : 'All caught up!'}</Text>
         </View>
         {unread > 0 && (
@@ -71,7 +71,7 @@ const styles = StyleSheet.create({
   header: {flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-start', padding: SIZES.padding, paddingBottom: SIZES.marginSm},
   title: {fontSize: 24, fontWeight: '700', color: COLORS.text, letterSpacing: -0.3},
   sub: {fontSize: SIZES.fontSm, color: COLORS.textTertiary, marginTop: 2},
-  markBtn: {backgroundColor: COLORS.primary, paddingHorizontal: 12, paddingVertical: 7, borderRadius: SIZES.radiusXs},
+  markBtn: {backgroundColor: COLORS.primary, paddingHorizontal: 12, paddingVertical: 7, borderRadius: SIZES.radiusSm},
   markBtnText: {fontSize: SIZES.fontSm, fontWeight: '600', color: COLORS.textWhite},
   filterRow: {maxHeight: 40, marginBottom: SIZES.margin},
   filterContent: {paddingHorizontal: SIZES.padding, gap: 6},
