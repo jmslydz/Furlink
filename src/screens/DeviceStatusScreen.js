@@ -3,59 +3,24 @@ import {View, Text, StyleSheet, ScrollView, SafeAreaView, TouchableOpacity, Aler
 import {COLORS, SIZES} from '../constants/theme';
 
 const DeviceStatusScreen = ({navigation}) => {
-  const device = {
-    name: 'Dog Cage #1', id: 'DC-2026-001', model: 'Smart Dog Cage V2',
-    firmware: 'v2.1.4', mac: 'AC:67:B2:14:3F:88', ip: '192.168.1.104',
-    wifi: 'Home_WiFi', uptime: '14d 7h 32m',
-    mqtt: true, cloud: true,
-  };
-
-  const sensors = [
-    {name: 'Food Level', icon: '🍽️', sensor: 'Ultrasonic', ok: true},
-    {name: 'Water Level', icon: '💧', sensor: 'Float Switch', ok: true},
-    {name: 'Waste Detection', icon: '💩', sensor: 'MQ-135 Gas', ok: true},
-    {name: 'Temperature', icon: '🌡️', sensor: 'DHT22', ok: true},
-    {name: 'Humidity', icon: '💨', sensor: 'DHT22', ok: true},
-    {name: 'Motion Detector', icon: '🏃', sensor: 'PIR HC-SR501', ok: true},
-    {name: 'Battery Monitor', icon: '🔋', sensor: 'Voltage Divider', ok: false},
-    {name: 'Camera', icon: '📷', sensor: 'ESP32-CAM', ok: true},
-  ];
-
-  const sendCmd = (cmd) => Alert.alert('Confirm', `${cmd} the device?`, [
-    {text: 'Cancel', style: 'cancel'},
-    {text: 'Send', onPress: () => Alert.alert('Sent', `${cmd} command sent to device.`)},
-  ]);
+  const device = {name: 'Furlink Cage', model: 'Raspberry Pi 4', firmware: 'Not connected', ip: 'Not available', wifi: 'Not verified', uptime: 'Not available'};
+  const sensors = ['Food level','Water level','Waste detection','Temperature','Humidity','Battery','Camera'].map(name=>({name,icon:'◦',sensor:'Not connected',ok:false}));
 
   return (
     <SafeAreaView style={styles.safe}>
       <ScrollView contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
-        <View style={styles.connRow}>
-          <View style={styles.connItem}>
-            <View style={[styles.connDot, {backgroundColor: device.mqtt ? COLORS.success : COLORS.danger}]} />
-            <Text style={styles.connLabel}>MQTT</Text>
-          </View>
-          <View style={styles.connItem}>
-            <View style={[styles.connDot, {backgroundColor: device.cloud ? COLORS.success : COLORS.danger}]} />
-            <Text style={styles.connLabel}>Cloud</Text>
-          </View>
-          <View style={styles.connItem}>
-            <Text style={styles.connWifi}>📶</Text>
-            <Text style={styles.connLabel}>Strong</Text>
-          </View>
-        </View>
+        <View style={styles.card}><Text style={styles.detailLabel}>Hardware status unavailable — connect and verify Raspberry Pi telemetry.</Text></View>
 
         <View style={styles.card}>
           <View style={styles.deviceHeader}>
             <Text style={styles.deviceIcon}>🏠</Text>
             <View>
               <Text style={styles.deviceName}>{device.name}</Text>
-              <Text style={styles.deviceId}>ID: {device.id}</Text>
+              <Text style={styles.deviceId}>Raspberry Pi 4</Text>
             </View>
           </View>
           {[
-            ['Model', device.model], ['Firmware', device.firmware],
-            ['MAC', device.mac], ['IP', device.ip],
-            ['Wi-Fi', device.wifi], ['Uptime', device.uptime],
+            ['Model', device.model], ['Firmware', device.firmware], ['IP', device.ip], ['Wi-Fi', device.wifi], ['Uptime', device.uptime],
           ].map(([l, v]) => (
             <View key={l} style={styles.detailRow}>
               <Text style={styles.detailLabel}>{l}</Text>
@@ -75,25 +40,12 @@ const DeviceStatusScreen = ({navigation}) => {
               </View>
             </View>
             <View style={[styles.sensorBadge, {backgroundColor: s.ok ? COLORS.success + '12' : COLORS.warning + '12'}]}>
-              <Text style={[styles.sensorBadgeText, {color: s.ok ? COLORS.success : COLORS.warning}]}>{s.ok ? 'OK' : 'Check'}</Text>
+              <Text style={[styles.sensorBadgeText, {color: s.ok ? COLORS.success : COLORS.warning}]}>Not verified</Text>
             </View>
           </View>
         ))}
 
-        <Text style={styles.sectionTitle}>Commands</Text>
-        <View style={styles.cmdRow}>
-          {[
-            {label: 'Restart', icon: '🔄', danger: false},
-            {label: 'Test Connection', icon: '📡', danger: false},
-            {label: 'Calibrate', icon: '🔧', danger: false},
-            {label: 'Factory Reset', icon: '⚠️', danger: true},
-          ].map(({label, icon, danger}) => (
-            <TouchableOpacity key={label} style={[styles.cmdBtn, danger && styles.cmdBtnDanger]} onPress={() => sendCmd(label)}>
-              <Text style={styles.cmdIcon}>{icon}</Text>
-              <Text style={[styles.cmdLabel, danger && {color: COLORS.danger}]}>{label}</Text>
-            </TouchableOpacity>
-          ))}
-        </View>
+        <Text style={styles.sectionTitle}>Commands</Text><View style={styles.card}><Text style={styles.detailLabel}>Hardware commands are disabled until authenticated device integration and acknowledgement are implemented.</Text></View>
       </ScrollView>
     </SafeAreaView>
   );
