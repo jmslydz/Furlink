@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import {View, Text, StyleSheet, ScrollView, SafeAreaView, TouchableOpacity} from 'react-native';
 import {COLORS, SIZES} from '../constants/theme';
 import ScreenIntro from '../components/ScreenIntro';
+import {useMode} from '../context/ModeContext';
 import NotificationItem from '../components/NotificationItem';
 
 const FILTERS = [
@@ -14,6 +15,7 @@ const FILTERS = [
 ];
 
 const NotificationsScreen = () => {
+  const {isDemo}=useMode();
   const [filter, setFilter] = useState('all');
   const [notifications, setNotifications] = useState([
     {id: '1', type: 'low_food', title: 'Low Food', message: 'Food container is at 15%. Please refill soon.', timestamp: Date.now() - 900000, read: false},
@@ -27,16 +29,16 @@ const NotificationsScreen = () => {
 
   const unread = notifications.filter((n) => !n.read).length;
 
-  const filtered = filter === 'all' ? notifications : filter === 'unread' ? notifications.filter((n) => !n.read) : notifications.filter((n) => n.type === filter);
+  const filtered = !isDemo ? [] : filter === 'all' ? notifications : filter === 'unread' ? notifications.filter((n) => !n.read) : notifications.filter((n) => n.type === filter);
 
   return (
     <SafeAreaView style={styles.safe}>
       <View style={styles.header}>
         <View>
-          <ScreenIntro title="Notifications" subtitle="Stay informed about Snoopy" size={58} /><Text style={styles.sub}>Sample alerts — not live hardware events</Text>
+          <ScreenIntro title="Notifications" subtitle="Stay informed about Snoopy" size={58} /><Text style={styles.sub}>{isDemo?'Demo alerts — not live hardware events':'Actual alerts unavailable — connect Raspberry Pi'}</Text>
           <Text style={styles.sub}>{unread > 0 ? `${unread} unread` : 'All caught up!'}</Text>
         </View>
-        {unread > 0 && (
+        {isDemo && unread > 0 && (
           <TouchableOpacity style={styles.markBtn} onPress={() => setNotifications((p) => p.map((n) => ({...n, read: true})))}>
             <Text style={styles.markBtnText}>Mark Read</Text>
           </TouchableOpacity>
