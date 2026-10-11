@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import {View, Text, StyleSheet, ScrollView, SafeAreaView, TouchableOpacity} from 'react-native';
 import {COLORS, SIZES} from '../constants/theme';
+import ScreenIntro from '../components/ScreenIntro';
 import NotificationItem from '../components/NotificationItem';
 
 const FILTERS = [
@@ -32,7 +33,7 @@ const NotificationsScreen = () => {
     <SafeAreaView style={styles.safe}>
       <View style={styles.header}>
         <View>
-          <Text style={styles.title}>Notifications</Text><Text style={styles.sub}>Sample alerts — not live hardware events</Text>
+          <ScreenIntro title="Notifications" subtitle="Stay informed about Snoopy" size={58} /><Text style={styles.sub}>Sample alerts — not live hardware events</Text>
           <Text style={styles.sub}>{unread > 0 ? `${unread} unread` : 'All caught up!'}</Text>
         </View>
         {unread > 0 && (
