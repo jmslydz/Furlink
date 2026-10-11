@@ -18,33 +18,26 @@ const CameraFeed = ({streamUrl, onRefresh, isOffline}) => {
         ) : (
           <View style={[styles.badge, {backgroundColor: '#EF444415'}]}>
             <View style={[styles.dot, {backgroundColor: '#EF4444'}]} />
-            <Text style={[styles.badgeText, {color: '#EF4444', letterSpacing: 0.5}]}>LIVE</Text>
+            <Text style={[styles.badgeText, {color: '#EF4444', letterSpacing: 0.5}]}>NOT VERIFIED</Text>
           </View>
         )}
       </View>
 
       <View style={styles.feed}>
         <Text style={styles.feedIcon}>🐕</Text>
-        <Text style={styles.feedTitle}>Camera Ready</Text>
+        <Text style={styles.feedTitle}>Camera not connected</Text>
         <Text style={styles.feedSub}>
-          {streamUrl ? 'Feed will appear here when connected' : 'ESP32-CAM stream URL not configured'}
+          {streamUrl ? 'Feed will appear here when connected' : 'Raspberry Pi 4 camera stream not configured'}
         </Text>
         <Text style={styles.feedHint}>
           {new Date().toLocaleString('en-PH', {month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit'})}
-          {'  •  '}28°C
+          
         </Text>
       </View>
 
       <View style={styles.controls}>
-        <TouchableOpacity style={styles.ctrl}>
-          <Text style={styles.ctrlIcon}>🔊</Text>
-          <Text style={styles.ctrlLabel}>Audio</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.ctrl}>
-          <Text style={styles.ctrlIcon}>📸</Text>
-          <Text style={styles.ctrlLabel}>Snapshot</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={[styles.ctrl, styles.ctrlPrimary]} onPress={onRefresh}>
+        <Text style={styles.ctrlLabel}>Camera controls will be enabled after stream integration</Text>
+        <TouchableOpacity style={[styles.ctrl, styles.ctrlPrimary]} disabled={!onRefresh} onPress={onRefresh}>
           <Text style={styles.ctrlIcon}>🔄</Text>
           <Text style={styles.ctrlLabelPrimary}>Refresh</Text>
         </TouchableOpacity>
