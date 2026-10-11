@@ -16,6 +16,7 @@ import DeviceStatusScreen from '../screens/DeviceStatusScreen';
 import SettingsScreen from '../screens/SettingsScreen';
 import CleaningScreen from '../screens/CleaningScreen';
 import AnimatedPup from '../components/AnimatedPup';
+import {ModeProvider} from '../context/ModeContext';
 import Icon from 'react-native-vector-icons/Ionicons';
 
 const Stack = createNativeStackNavigator();
@@ -71,7 +72,7 @@ const AppNavigator = () => {
   }
 
   return (
-    <NavigationContainer>
+    <ModeProvider><NavigationContainer>
       <Stack.Navigator screenOptions={{headerShown: false, contentStyle: {backgroundColor: COLORS.background}}}>
         {user ? (
           <>
@@ -103,7 +104,7 @@ const AppNavigator = () => {
           </>
         )}
       </Stack.Navigator>
-    </NavigationContainer>
+    </NavigationContainer></ModeProvider>
   );
 };
 
