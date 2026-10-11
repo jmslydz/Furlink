@@ -8,7 +8,7 @@ const Metric = ({icon,label,value}) => <View style={styles.metric}><Text style={
 
 export default function HomeScreen({navigation}) {
   const {isOffline} = useAuth();
-  const actions=[['◒','Feed','ScheduleTab'],['💧','Water','DeviceStatus'],['✧','Clean','DeviceStatus'],['▣','Monitor','MonitorTab']];
+  const actions=[['◒','Feed','ScheduleTab'],['💧','Water','DeviceStatus'],['✧','Clean','CleaningTab'],['▣','Monitor','MonitorTab']];
   return <SafeAreaView style={styles.safe}><ScrollView contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
     <View style={styles.header}><Text style={styles.brand}>Furlink</Text><TouchableOpacity accessibilityLabel="Notifications" onPress={()=>navigation.navigate('NotificationsTab')}><Text style={styles.bell}>♧</Text></TouchableOpacity></View>
     <View style={styles.petCard}><AnimatedPup size={102}/><View style={{flex:1}}><Text style={styles.petName}>Snoopy</Text><Text style={styles.status}>●  {isOffline?'Offline':'Demo preview'}</Text><Text style={styles.small}>Hardware not verified</Text></View></View>
