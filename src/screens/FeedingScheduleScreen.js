@@ -64,13 +64,13 @@ const FeedingScheduleScreen = () => {
     <SafeAreaView style={styles.safe}>
       <ScrollView contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
         <Text style={styles.title}>Feeding Schedule</Text>
-        <Text style={styles.sub}>Automatic feeding times for your dog</Text>
+        <Text style={styles.sub}>Local schedule preview — not synced to Raspberry Pi</Text>
 
         <View style={styles.summary}>
           {[
             ['Active', String(activeCount)],
             ['Servings', String(totalServings)],
-            ['Today', '2x'],
+            ['Mode', 'Demo'],
           ].map(([l, v]) => (
             <View key={l} style={styles.summaryItem}>
               <Text style={styles.summaryVal}>{v}</Text>
@@ -96,7 +96,7 @@ const FeedingScheduleScreen = () => {
           <ScheduleCard key={s.id} schedule={s} onToggle={(id, v) => setSchedules((p) => p.map((x) => x.id === id ? {...x, enabled: v} : x))} onEdit={openEdit} onDelete={handleDelete} />
         ))}
 
-        <Text style={[styles.sectionTitle, {marginTop: SIZES.padding}]}>Recent History</Text>
+        <Text style={[styles.sectionTitle, {marginTop: SIZES.padding}]}>Example history (not device logs)</Text>
         {logs.map((l) => (
           <View key={l.id} style={styles.logItem}>
             <View style={styles.logLeft}>
@@ -162,13 +162,13 @@ const styles = StyleSheet.create({
   content: {padding: SIZES.padding, paddingBottom: 100},
   title: {fontSize: 24, fontWeight: '700', color: COLORS.text, letterSpacing: -0.3},
   sub: {fontSize: SIZES.fontSm, color: COLORS.textTertiary, marginTop: 4, marginBottom: SIZES.padding},
-  summary: {flexDirection: 'row', backgroundColor: COLORS.card, borderRadius: SIZES.radiusSm, padding: SIZES.paddingSm, marginBottom: SIZES.padding, borderWidth: 1, borderColor: COLORS.cardBorder},
+  summary: {flexDirection: 'row', backgroundColor: COLORS.card, borderRadius: SIZES.radius, padding: SIZES.paddingSm, marginBottom: SIZES.padding, borderWidth: 1, borderColor: COLORS.cardBorder},
   summaryItem: {flex: 1, alignItems: 'center'},
   summaryVal: {fontSize: 22, fontWeight: '800', color: COLORS.primary},
   summaryLabel: {fontSize: 10, color: COLORS.textTertiary, textTransform: 'uppercase', marginTop: 2},
   sectionRow: {flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: SIZES.marginSm},
   sectionTitle: {fontSize: SIZES.fontLg, fontWeight: '700', color: COLORS.text},
-  addBtn: {backgroundColor: COLORS.primary, paddingHorizontal: 14, paddingVertical: 6, borderRadius: SIZES.radiusXs},
+  addBtn: {backgroundColor: COLORS.primary, paddingHorizontal: 14, paddingVertical: 6, borderRadius: SIZES.radiusSm},
   addBtnText: {color: COLORS.textWhite, fontWeight: '700', fontSize: SIZES.fontSm},
   empty: {alignItems: 'center', padding: 40, backgroundColor: COLORS.card, borderRadius: SIZES.radiusSm, borderWidth: 1, borderColor: COLORS.cardBorder},
   emptyIcon: {fontSize: 40, marginBottom: 8},
