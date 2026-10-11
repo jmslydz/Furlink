@@ -2,6 +2,7 @@ import React from 'react';
 import {View, Text, StyleSheet, ScrollView, SafeAreaView, TouchableOpacity, Alert} from 'react-native';
 import {COLORS, SIZES} from '../constants/theme';
 import ScreenIntro from '../components/ScreenIntro';
+import ModeSwitch from '../components/ModeSwitch';
 
 const DeviceStatusScreen = ({navigation}) => {
   const device = {name: 'Furlink Cage', model: 'Raspberry Pi 4', firmware: 'Not connected', ip: 'Not available', wifi: 'Not verified', uptime: 'Not available'};
@@ -10,7 +11,7 @@ const DeviceStatusScreen = ({navigation}) => {
   return (
     <SafeAreaView style={styles.safe}>
       <ScrollView contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
-        <ScreenIntro title="Device Status" subtitle="Raspberry Pi 4 overview" /><View style={styles.card}><Text style={styles.detailLabel}>Hardware status unavailable — connect and verify Raspberry Pi telemetry.</Text></View>
+        <ScreenIntro title="Device Status" subtitle="Raspberry Pi 4 overview" /><ModeSwitch/><View style={styles.card}><Text style={styles.detailLabel}>Hardware status unavailable — connect and verify Raspberry Pi telemetry.</Text></View>
 
         <View style={styles.card}>
           <View style={styles.deviceHeader}>
