@@ -1,0 +1,6 @@
+import React from 'react';
+import {View,Text,TouchableOpacity,StyleSheet} from 'react-native';
+import {COLORS} from '../constants/theme';
+import {useMode} from '../context/ModeContext';
+export default function ModeSwitch(){const {mode,setMode}=useMode();return <View style={s.outer}><Text style={s.label}>APP MODE</Text><View style={s.switch}>{[['demo','Demo'],['actual','Actual']].map(([key,label])=><TouchableOpacity accessibilityRole="button" accessibilityState={{selected:mode===key}} key={key} onPress={()=>setMode(key)} style={[s.option,mode===key&&s.active]}><Text style={[s.optionText,mode===key&&s.activeText]}>{label}</Text></TouchableOpacity>)}</View><Text style={s.hint}>{mode==='demo'?'Simulated data and actions only':'Hardware not connected · actual controls unavailable'}</Text></View>}
+const s=StyleSheet.create({outer:{marginVertical:13},label:{fontSize:10,letterSpacing:1,color:COLORS.textSecondary,fontWeight:'700',marginBottom:7},switch:{flexDirection:'row',backgroundColor:COLORS.surface,borderRadius:16,padding:4},option:{flex:1,alignItems:'center',paddingVertical:11,borderRadius:13},active:{backgroundColor:COLORS.primaryDark},optionText:{color:COLORS.textSecondary,fontSize:14,fontWeight:'700'},activeText:{color:'#FFFFFF'},hint:{color:COLORS.textSecondary,fontSize:12,marginTop:8}});
