@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import {View, Text, TextInput, StyleSheet, TouchableOpacity, KeyboardAvoidingView, Platform, ScrollView, ActivityIndicator} from 'react-native';
 import {COLORS, SIZES} from '../constants/theme';
+import ScreenIntro from '../components/ScreenIntro';
 import {useAuth} from '../context/AuthContext';
 
 const RegisterScreen = ({navigation}) => {
@@ -28,7 +29,7 @@ const RegisterScreen = ({navigation}) => {
     <KeyboardAvoidingView style={styles.flex} behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
       <ScrollView contentContainerStyle={styles.container} keyboardShouldPersistTaps="handled">
         <View style={styles.form}>
-          <Text style={styles.title}>Create Account</Text>
+          <ScreenIntro title="Create Account" subtitle="Welcome to the Furlink family" size={85} />
           <Text style={styles.sub}>Sign up to start monitoring your dog</Text>
 
           {error ? (
