@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import {View, Text, StyleSheet, ScrollView, SafeAreaView, TouchableOpacity} from 'react-native';
 import {COLORS, SIZES} from '../constants/theme';
 import ScreenIntro from '../components/ScreenIntro';
+import ScreenIntro from '../components/ScreenIntro';
 import CameraFeed from '../components/CameraFeed';
 
 const LiveMonitorScreen = () => {
