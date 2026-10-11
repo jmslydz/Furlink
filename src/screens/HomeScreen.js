@@ -1,22 +1,30 @@
-import React from 'react';
-import {View, Text, StyleSheet, ScrollView, TouchableOpacity, SafeAreaView} from 'react-native';
+import React,{useState} from 'react';
+import {View, Text, StyleSheet, ScrollView, TouchableOpacity, SafeAreaView,Alert} from 'react-native';
 import {COLORS} from '../constants/theme';
 import {useAuth} from '../context/AuthContext';
 import AnimatedPup from '../components/AnimatedPup';
+import ModeSwitch from '../components/ModeSwitch';
+import {useMode} from '../context/ModeContext';
 
 const Metric = ({icon,label,value}) => <View style={styles.metric}><Text style={styles.icon}>{icon}</Text><View><Text style={styles.small}>{label}</Text><Text style={styles.value}>{value}</Text></View></View>;
 
 export default function HomeScreen({navigation}) {
   const {isOffline} = useAuth();
-  const actions=[['◒','Feed','ScheduleTab'],['💧','Water','DeviceStatus'],['✧','Clean','CleaningTab'],['▣','Monitor','MonitorTab']];
+  const {isDemo}=useMode();
+  const [food,setFood]=useState(68);
+  const [water,setWater]=useState(45);
+  const [message,setMessage]=useState('Sample device overview');
+  const quick=(label,screen)=>{if(label==='Feed'||label==='Water'){if(!isDemo)return Alert.alert('Actual mode','Hardware controls are unavailable until the Raspberry Pi integration is verified.');if(label==='Feed'){setFood(v=>Math.max(0,v-8));setMessage('Simulated feeding completed.');}else{setWater(v=>Math.max(0,v-5));setMessage('Simulated water dispense completed.');}return;}navigation.navigate(screen);};
+  const actions=[['◒','Feed',null],['💧','Water',null],['✧','Clean','CleaningTab'],['▣','Monitor','MonitorTab']];
   return <SafeAreaView style={styles.safe}><ScrollView contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
     <View style={styles.header}><Text style={styles.brand}>Furlink</Text><TouchableOpacity accessibilityLabel="Notifications" onPress={()=>navigation.navigate('NotificationsTab')}><Text style={styles.bell}>♧</Text></TouchableOpacity></View>
     <View style={styles.petCard}><AnimatedPup size={102}/><View style={{flex:1}}><Text style={styles.petName}>Snoopy</Text><Text style={styles.status}>●  {isOffline?'Offline':'Demo preview'}</Text><Text style={styles.small}>Hardware not verified</Text></View></View>
-    <Text style={styles.demo}>Sample readings only. Raspberry Pi telemetry is not yet connected.</Text>
+    <ModeSwitch />
+    <Text style={styles.demo}>{isDemo?'DEMO MODE · Sample values only. '+message:'ACTUAL MODE · Waiting for verified Raspberry Pi connection.'}</Text>
     <Text style={styles.section}>Cage overview</Text>
-    <View style={styles.grid}><Metric icon="◒" label="Food" value="68%"/><Metric icon="💧" label="Water" value="45%"/><Metric icon="♨" label="Temperature" value="27°C"/><Metric icon="▣" label="Battery" value="81%"/></View>
+    <View style={styles.grid}><Metric icon="◒" label="Food" value={isDemo?food+"%":"--"}/><Metric icon="💧" label="Water" value={isDemo?water+"%":"--"}/><Metric icon="♨" label="Temperature" value={isDemo?"27°C":"--"}/><Metric icon="▣" label="Battery" value={isDemo?"81%":"--"}/></View>
     <Text style={styles.section}>Quick actions</Text>
-    <View style={styles.actions}>{actions.map(([icon,label,screen],i)=><TouchableOpacity key={label} onPress={()=>navigation.navigate(screen)} style={[styles.action,i===0&&styles.selected]}><Text style={[styles.actionIcon,i===0&&styles.white]}>{icon}</Text><Text style={[styles.actionLabel,i===0&&styles.white]}>{label}</Text></TouchableOpacity>)}</View>
+    <View style={styles.actions}>{actions.map(([icon,label,screen],i)=><TouchableOpacity key={label} onPress={()=>quick(label,screen)} style={[styles.action,i===0&&styles.selected]}><Text style={[styles.actionIcon,i===0&&styles.white]}>{icon}</Text><Text style={[styles.actionLabel,i===0&&styles.white]}>{label}</Text></TouchableOpacity>)}</View>
     <View style={styles.notice}><Text style={styles.noticeTitle}>Cleaning safety</Text><Text style={styles.noticeBody}>Conveyor cleaning must be demonstrated with an empty cage until safe operation around a dog has been independently validated.</Text></View>
   </ScrollView></SafeAreaView>;
 }
