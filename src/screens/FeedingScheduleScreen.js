@@ -4,11 +4,14 @@ import {COLORS, SIZES} from '../constants/theme';
 import ScreenIntro from '../components/ScreenIntro';
 import ModeSwitch from '../components/ModeSwitch';
 import {useMode} from '../context/ModeContext';
+import ModeSwitch from '../components/ModeSwitch';
+import {useMode} from '../context/ModeContext';
 import ScheduleCard from '../components/ScheduleCard';
 
 const DAYS_SHORT = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
 
 const FeedingScheduleScreen = () => {
+  const {isDemo}=useMode();
   const {isDemo}=useMode();
   const [schedules, setSchedules] = useState([
     {id: '1', time: '07:00 AM', amount: 1.5, days: [1, 2, 3, 4, 5], enabled: true},
@@ -46,6 +49,8 @@ const FeedingScheduleScreen = () => {
   };
 
   const handleSave = () => {
+    if (!isDemo) return Alert.alert('Actual mode','Device schedule synchronization is not connected.');
+    if (!/^(0?[1-9]|1[0-2]):[0-5][0-9]$/.test(formTime.trim()) || !(parseFloat(formAmount)>0) || !formDays.length) return Alert.alert('Invalid schedule','Enter a valid 12-hour time, serving amount, and at least one day.');
     if(!isDemo)return Alert.alert('Actual mode','Connect and verify the Raspberry Pi before modifying real schedules.');
     const timeOk=/^(0?[1-9]|1[0-2]):[0-5][0-9]$/.test(formTime.trim());
     if(!timeOk||!Number.isFinite(Number(formAmount))||Number(formAmount)<=0||formDays.length===0)return Alert.alert('Invalid schedule','Choose a valid 12-hour time, positive servings, and at least one day.');
@@ -73,7 +78,7 @@ const FeedingScheduleScreen = () => {
   return (
     <SafeAreaView style={styles.safe}>
       <ScrollView contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
-        <ScreenIntro title="Feeding Schedule" subtitle="Plan Snoopy’s meals" /><ModeSwitch/>
+        <ScreenIntro title="Feeding Schedule" subtitle="Plan Snoopy’s meals" /><ModeSwitch /><ModeSwitch/>
         <Text style={styles.sub}>Local schedule preview — not synced to Raspberry Pi</Text>
 
         <View style={styles.summary}>
@@ -91,7 +96,7 @@ const FeedingScheduleScreen = () => {
 
         <View style={styles.sectionRow}>
           <Text style={styles.sectionTitle}>Scheduled Feedings</Text>
-          <TouchableOpacity style={styles.addBtn} onPress={openAdd}>
+          <TouchableOpacity style={styles.addBtn} onPress={isDemo?openAdd:()=>Alert.alert('Actual mode','Schedule changes require verified hardware integration.')}>
             <Text style={styles.addBtnText}>+ Add</Text>
           </TouchableOpacity>
         </View>
@@ -103,7 +108,7 @@ const FeedingScheduleScreen = () => {
             <Text style={styles.emptyText}>Tap "Add" to create one</Text>
           </View>
         ) : schedules.map((s) => (
-          <ScheduleCard key={s.id} schedule={s} onToggle={(id, v) => setSchedules((p) => p.map((x) => x.id === id ? {...x, enabled: v} : x))} onEdit={openEdit} onDelete={handleDelete} />
+          <ScheduleCard key={s.id} schedule={s} onToggle={(id, v) => !isDemo?Alert.alert('Actual mode','Device not connected.'):setSchedules((p) => p.map((x) => x.id === id ? {...x, enabled: v} : x))} onEdit={isDemo?openEdit:()=>Alert.alert('Actual mode','Device not connected.')} onDelete={isDemo?handleDelete:()=>Alert.alert('Actual mode','Device not connected.')} />
         ))}
 
         <Text style={[styles.sectionTitle, {marginTop: SIZES.padding}]}>Example history (not device logs)</Text>
