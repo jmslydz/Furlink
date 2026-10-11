@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import {View, Text, StyleSheet, ScrollView, SafeAreaView, TouchableOpacity, Modal, TextInput, Alert} from 'react-native';
 import {COLORS, SIZES} from '../constants/theme';
+import ScreenIntro from '../components/ScreenIntro';
 import ScheduleCard from '../components/ScheduleCard';
 
 const DAYS_SHORT = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
@@ -63,7 +64,7 @@ const FeedingScheduleScreen = () => {
   return (
     <SafeAreaView style={styles.safe}>
       <ScrollView contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
-        <Text style={styles.title}>Feeding Schedule</Text>
+        <ScreenIntro title="Feeding Schedule" subtitle="Plan Snoopy’s meals" />
         <Text style={styles.sub}>Local schedule preview — not synced to Raspberry Pi</Text>
 
         <View style={styles.summary}>
