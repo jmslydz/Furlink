@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import {View, Text, StyleSheet, ScrollView, SafeAreaView, TouchableOpacity} from 'react-native';
 import {COLORS, SIZES} from '../constants/theme';
+import ScreenIntro from '../components/ScreenIntro';
 import CameraFeed from '../components/CameraFeed';
 
 const LiveMonitorScreen = () => {
@@ -9,7 +10,7 @@ const LiveMonitorScreen = () => {
   return (
     <SafeAreaView style={styles.safe}>
       <ScrollView contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
-        <Text style={styles.title}>Live Monitor</Text>
+        <ScreenIntro title="Live Monitor" subtitle="Keep an eye on Snoopy" />
         <Text style={styles.sub}>Raspberry Pi 4 camera · connection pending</Text>
 
         <CameraFeed key={key} isOffline onRefresh={() => setKey((k) => k + 1)} />
