@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import {View, Text, TextInput, StyleSheet, TouchableOpacity, KeyboardAvoidingView, Platform, ScrollView, ActivityIndicator} from 'react-native';
 import {COLORS, SIZES} from '../constants/theme';
 import ScreenIntro from '../components/ScreenIntro';
+import ScreenIntro from '../components/ScreenIntro';
 import {useAuth} from '../context/AuthContext';
 
 const RegisterScreen = ({navigation}) => {
