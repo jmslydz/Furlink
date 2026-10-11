@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import {View, Text, StyleSheet, ScrollView, SafeAreaView, TouchableOpacity, Switch, Alert, Modal, TextInput} from 'react-native';
 import {COLORS, SIZES} from '../constants/theme';
 import ScreenIntro from '../components/ScreenIntro';
+import ModeSwitch from '../components/ModeSwitch';
 import {useAuth} from '../context/AuthContext';
 
 const SettingsScreen = ({navigation}) => {
@@ -34,7 +35,7 @@ const SettingsScreen = ({navigation}) => {
   return (
     <SafeAreaView style={styles.safe}>
       <ScrollView contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
-        <ScreenIntro title="Settings" subtitle="Make Furlink yours" />
+        <ScreenIntro title="Settings" subtitle="Make Furlink yours" /><ModeSwitch/>
         <Text style={styles.sub}>Customize your experience</Text>
 
         <TouchableOpacity style={styles.profile} onPress={() => {setProfileName(user?.displayName || ''); setShowProfile(true);}}>
