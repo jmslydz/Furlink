@@ -2,6 +2,8 @@ import React, {useState} from 'react';
 import {View, Text, StyleSheet, ScrollView, SafeAreaView, TouchableOpacity} from 'react-native';
 import {COLORS, SIZES} from '../constants/theme';
 import ScreenIntro from '../components/ScreenIntro';
+import ModeSwitch from '../components/ModeSwitch';
+import {useMode} from '../context/ModeContext';
 import {useMode} from '../context/ModeContext';
 import NotificationItem from '../components/NotificationItem';
 
@@ -15,6 +17,7 @@ const FILTERS = [
 ];
 
 const NotificationsScreen = () => {
+  const {isDemo}=useMode();
   const {isDemo}=useMode();
   const [filter, setFilter] = useState('all');
   const [notifications, setNotifications] = useState([
@@ -35,8 +38,8 @@ const NotificationsScreen = () => {
     <SafeAreaView style={styles.safe}>
       <View style={styles.header}>
         <View>
-          <ScreenIntro title="Notifications" subtitle="Stay informed about Snoopy" size={58} /><Text style={styles.sub}>{isDemo?'Demo alerts — not live hardware events':'Actual alerts unavailable — connect Raspberry Pi'}</Text>
-          <Text style={styles.sub}>{unread > 0 ? `${unread} unread` : 'All caught up!'}</Text>
+          <ScreenIntro title="Notifications" subtitle="Stay informed about Snoopy" size={58} /><ModeSwitch/><Text style={styles.sub}>{isDemo?'Demo alerts — not live hardware events':'Actual alerts unavailable — connect Raspberry Pi'}</Text>
+          <Text style={styles.sub}>{isDemo?(unread > 0 ? `${unread} unread` : 'All caught up!'):'Not connected'}</Text>
         </View>
         {isDemo && unread > 0 && (
           <TouchableOpacity style={styles.markBtn} onPress={() => setNotifications((p) => p.map((n) => ({...n, read: true})))}>
