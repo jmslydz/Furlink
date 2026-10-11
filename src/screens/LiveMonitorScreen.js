@@ -10,32 +10,18 @@ const LiveMonitorScreen = () => {
     <SafeAreaView style={styles.safe}>
       <ScrollView contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
         <Text style={styles.title}>Live Monitor</Text>
-        <Text style={styles.sub}>Real-time camera and environment data</Text>
+        <Text style={styles.sub}>Raspberry Pi 4 camera · connection pending</Text>
 
-        <CameraFeed key={key} onRefresh={() => setKey((k) => k + 1)} />
+        <CameraFeed key={key} isOffline onRefresh={() => setKey((k) => k + 1)} />
 
-        <View style={styles.grid}>
-          {[
-            {icon: '🌡️', value: '28°C', label: 'Temperature', status: 'Normal'},
-            {icon: '💨', value: '65%', label: 'Humidity', status: 'Normal'},
-            {icon: '💡', value: '450 lux', label: 'Light Level', status: 'Adequate'},
-            {icon: '🔊', value: '42 dB', label: 'Noise Level', status: 'Quiet'},
-          ].map(({icon, value, label, status}) => (
-            <View key={label} style={styles.envCard}>
-              <Text style={styles.envIcon}>{icon}</Text>
-              <Text style={styles.envValue}>{value}</Text>
-              <Text style={styles.envLabel}>{label}</Text>
-              <View style={styles.envBadge}><Text style={styles.envBadgeText}>{status}</Text></View>
-            </View>
-          ))}
-        </View>
+        <View style={styles.card}><Text style={styles.guideText}>Sensor readings are unavailable until the Raspberry Pi is connected.</Text></View>
 
         <View style={styles.card}>
           <Text style={styles.cardTitle}>📋 Camera Info</Text>
           {[
-            ['Device', 'ESP32-CAM'],
-            ['Resolution', '640×480 @ 15fps'],
-            ['Stream', 'MJPEG over HTTP'],
+            ['Device', 'Raspberry Pi 4 camera'],
+            ['Resolution', 'Not configured'],
+            ['Stream', 'Not connected'],
           ].map(([label, value]) => (
             <View key={label} style={styles.infoRow}>
               <Text style={styles.infoLabel}>{label}</Text>
@@ -47,11 +33,9 @@ const LiveMonitorScreen = () => {
         <View style={styles.card}>
           <Text style={styles.cardTitle}>💡 Setup Guide</Text>
           <Text style={styles.guideText}>
-            Power on your ESP32-CAM and connect it to Wi-Fi. The camera stream URL will appear here automatically once the device is detected on your network.
+            Connect the Raspberry Pi 4 camera to a secure stream service. The app must be configured and authenticated before video can appear.
           </Text>
-          <TouchableOpacity style={styles.guideBtn}>
-            <Text style={styles.guideBtnText}>Configure Camera</Text>
-          </TouchableOpacity>
+          <Text style={styles.guideText}>Camera configuration is not implemented yet.</Text>
         </View>
       </ScrollView>
     </SafeAreaView>
