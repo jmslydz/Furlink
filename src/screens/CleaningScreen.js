@@ -3,25 +3,29 @@ import {View,Text,StyleSheet,ScrollView,SafeAreaView,TouchableOpacity,Alert} fro
 import {COLORS} from '../constants/theme';
 import CameraFeed from '../components/CameraFeed';
 import AnimatedPup from '../components/AnimatedPup';
+import ModeSwitch from '../components/ModeSwitch';
+import {useMode} from '../context/ModeContext';
 
 export default function CleaningScreen(){
+ const {isDemo}=useMode();
  const [stage,setStage]=useState('idle'); const [seconds,setSeconds]=useState(0);
  const timer=useRef(null);
  useEffect(()=>{if(stage!=='running')return;timer.current=setInterval(()=>setSeconds(t=>t+1),1000);return()=>clearInterval(timer.current);},[stage]);
  useEffect(()=>{if(stage==='running'&&seconds>=12)setStage('complete');},[stage,seconds]);
+ useEffect(()=>{if(!isDemo){setStage('idle');setSeconds(0);clearInterval(timer.current);}},[isDemo]);
  const start=()=>Alert.alert('Demo cleaning only','Confirm that this is an empty-cage simulation. No motor or pump will operate.',[{text:'Cancel',style:'cancel'},{text:'Start demo',onPress:()=>{setSeconds(0);setStage('running');}}]);
  const stop=()=>{setStage('stopped');clearInterval(timer.current);};
  const phase=stage==='running'?(seconds<7?'Conveyor moving (simulated)':'Water rinse (simulated)'):stage==='complete'?'Demo complete':stage==='stopped'?'Simulation stopped':'Ready for demo';
  return <SafeAreaView style={s.safe}><ScrollView contentContainerStyle={s.content}>
- <Text style={s.title}>Cleaning</Text><Text style={s.sub}>Interactive demonstration · no hardware control</Text>
+ <Text style={s.title}>Cleaning</Text><Text style={s.sub}>Interactive demonstration · no hardware control</Text><ModeSwitch/>
  <View style={s.pup}><AnimatedPup size={88}/><View style={{flex:1}}><Text style={s.head}>Snoopy's clean space</Text><Text style={s.body}>See how waste removal and rinsing would work.</Text></View></View>
  <CameraFeed isOffline />
  <View style={s.card}><Text style={s.head}>Demo sequence</Text><Text style={s.phase}>{phase}</Text><View style={s.track}><View style={[s.fill,{width:(stage==='complete'?100:stage==='running'?Math.min(100,seconds/12*100):0)+'%'}]}/></View><Text style={s.body}>{stage==='running'?seconds+' / 12 seconds':stage==='complete'?'The demonstration finished.':'No real equipment is connected.'}</Text></View>
  <Text style={s.section}>System overview</Text>
  {[['Conveyor motor',stage==='running'&&seconds<7?'Simulated movement':'Off (demo)'],['Water pump',stage==='running'&&seconds>=7?'Simulated rinse':'Off (demo)'],['Safety interlocks','Not installed or verified'],['Physical emergency stop','Not verified']].map(([l,v])=><View key={l} style={s.row}><Text style={s.label}>{l}</Text><Text style={s.value}>{v}</Text></View>)}
  <View style={s.warning}><Text style={s.head}>⚠ Safety notice</Text><Text style={s.body}>Demonstrate conveyor movement only with an empty cage. Slow movement does not establish safety for a dog standing on the belt. This app simulation does not replace a hardwired emergency stop or hardware interlocks.</Text></View>
- <TouchableOpacity disabled={stage==='running'} onPress={start} style={[s.start,stage==='running'&&{opacity:.4}]}><Text style={s.buttonText}>▶ Start cleaning demo</Text></TouchableOpacity>
- <TouchableOpacity onPress={stop} disabled={stage!=='running'} style={[s.stop,stage!=='running'&&{opacity:.45}]}><Text style={s.stopText}>■ STOP DEMO</Text></TouchableOpacity>
+ <TouchableOpacity disabled={!isDemo||stage==='running'} onPress={start} style={[s.start,(!isDemo||stage==='running')&&{opacity:.4}]}><Text style={s.buttonText}>▶ Start cleaning demo</Text></TouchableOpacity>
+ <TouchableOpacity onPress={stop} disabled={!isDemo||stage!=='running'} style={[s.stop,(!isDemo||stage!=='running')&&{opacity:.45}]}><Text style={s.stopText}>■ STOP DEMO</Text></TouchableOpacity>
  <Text style={s.hint}>For real implementation, STOP must request motor and pump shutdown immediately and wait for verified device acknowledgement. Until then, this screen controls only an on-screen animation.</Text>
  </ScrollView></SafeAreaView>;
 }
