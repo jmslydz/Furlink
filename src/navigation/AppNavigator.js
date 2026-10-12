@@ -15,7 +15,8 @@ import NotificationsScreen from '../screens/NotificationsScreen';
 import DeviceStatusScreen from '../screens/DeviceStatusScreen';
 import SettingsScreen from '../screens/SettingsScreen';
 import CleaningScreen from '../screens/CleaningScreen';
-import AnimatedPup from '../components/AnimatedPup';
+import PupIllustration from '../components/PupIllustration';
+import DispenseScreen from '../screens/DispenseScreen';
 import {ModeProvider} from '../context/ModeContext';
 import Icon from 'react-native-vector-icons/Ionicons';
 
@@ -49,10 +50,9 @@ const HomeTabs = () => (
       tabBarLabelStyle: {fontSize: 10, fontWeight: '600'},
     }}>
     <Tab.Screen name="HomeTab" component={HomeScreen} options={{tabBarIcon: ({focused}) => <TabIcon icon="home-outline" focused={focused} />}} />
-    <Tab.Screen name="MonitorTab" component={LiveMonitorScreen} options={{tabBarIcon: ({focused}) => <TabIcon icon="videocam-outline" focused={focused} />}} />
-    <Tab.Screen name="CleaningTab" component={CleaningScreen} options={{title: "Clean", tabBarIcon: ({focused}) => <TabIcon icon="sparkles-outline" focused={focused} />}} />
-    <Tab.Screen name="ScheduleTab" component={FeedingScheduleScreen} options={{tabBarIcon: ({focused}) => <TabIcon icon="time-outline" focused={focused} />}} />
-    <Tab.Screen name="NotificationsTab" component={NotificationsScreen} options={{tabBarIcon: ({focused}) => <TabIcon icon="notifications-outline" focused={focused} />}} />
+    <Tab.Screen name="MonitorTab" component={LiveMonitorScreen} options={{tabBarIcon: ({focused}) => <TabIcon icon="camera-outline" focused={focused} />}} />
+    <Tab.Screen name="ScheduleTab" component={FeedingScheduleScreen} options={{tabBarIcon: ({focused}) => <TabIcon icon="calendar-outline" focused={focused} />}} />
+    <Tab.Screen name="NotificationsTab" component={NotificationsScreen} options={{title:'History',tabBarIcon: ({focused}) => <TabIcon icon="time-outline" focused={focused} />}} />
     <Tab.Screen name="SettingsTab" component={SettingsScreen} options={{tabBarIcon: ({focused}) => <TabIcon icon="settings-outline" focused={focused} />}} />
   </Tab.Navigator>
 );
@@ -63,7 +63,7 @@ const AppNavigator = () => {
   if (loading) {
     return (
       <View style={styles.splash}>
-        <AnimatedPup size={140} />
+        <PupIllustration pose="sleep" size={200} />
         <Text style={{fontSize: 26, fontWeight: '800', color: COLORS.text}}>Furlink</Text>
         <Text style={{fontSize: SIZES.fontSm, color: COLORS.textTertiary, marginTop: 4}}>IoT Dog Cage Monitoring</Text>
         <ActivityIndicator size="large" color={COLORS.primary} style={{marginTop: 40}} />
@@ -77,6 +77,9 @@ const AppNavigator = () => {
         {user ? (
           <>
             <Stack.Screen name="Main" component={HomeTabs} />
+            <Stack.Screen name="Feeding" options={{headerShown:false}}>{props=><DispenseScreen {...props} kind="food" />}</Stack.Screen>
+            <Stack.Screen name="Water" options={{headerShown:false}}>{props=><DispenseScreen {...props} kind="water" />}</Stack.Screen>
+            <Stack.Screen name="CleaningTab" component={CleaningScreen} />
             <Stack.Screen name="DeviceStatus" component={DeviceStatusScreen}
               options={{
                 headerShown: true,
