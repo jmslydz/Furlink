@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import {View, Text, TextInput, StyleSheet, TouchableOpacity, KeyboardAvoidingView, Platform, ScrollView, ActivityIndicator} from 'react-native';
 import {COLORS, SIZES} from '../constants/theme';
 import {useAuth} from '../context/AuthContext';
-import AnimatedPup from '../components/AnimatedPup';
+import PupIllustration from '../components/PupIllustration';
 
 const LoginScreen = ({navigation}) => {
   const {signIn} = useAuth();
@@ -25,9 +25,9 @@ const LoginScreen = ({navigation}) => {
     <KeyboardAvoidingView style={styles.flex} behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
       <ScrollView contentContainerStyle={styles.container} keyboardShouldPersistTaps="handled">
         <View style={styles.top}>
-          <AnimatedPup size={132} />
+          <PupIllustration pose="sleep" size={180} />
           <Text style={styles.title}>Welcome back</Text>
-          <Text style={styles.sub}>Sign in to Furlink</Text>
+          <Text style={styles.sub}>Sign in to continue</Text>
         </View>
 
         <View style={styles.form}>
@@ -106,7 +106,7 @@ const styles = StyleSheet.create({
   inputGroup: {marginBottom: SIZES.margin},
   label: {fontSize: SIZES.fontXs, fontWeight: '600', color: COLORS.textSecondary, marginBottom: 6, textTransform: 'uppercase', letterSpacing: 0.3},
   input: {
-    backgroundColor: COLORS.surface, borderRadius: SIZES.radiusXs,
+    backgroundColor: COLORS.card, borderRadius: 14,
     height: SIZES.inputHeight, paddingHorizontal: 14,
     fontSize: SIZES.fontMd, color: COLORS.text,
     borderWidth: 1, borderColor: COLORS.cardBorder,
