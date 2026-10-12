@@ -4,20 +4,16 @@ import {COLORS, SIZES} from '../constants/theme';
 import ScreenIntro from '../components/ScreenIntro';
 import ModeSwitch from '../components/ModeSwitch';
 import {useMode} from '../context/ModeContext';
-import ModeSwitch from '../components/ModeSwitch';
-import {useMode} from '../context/ModeContext';
-import ScreenIntro from '../components/ScreenIntro';
 import CameraFeed from '../components/CameraFeed';
 
 const LiveMonitorScreen = () => {
   const [key, setKey] = useState(0);
   const {isDemo}=useMode();
-  const {isDemo}=useMode();
 
   return (
     <SafeAreaView style={styles.safe}>
       <ScrollView contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
-        <ScreenIntro title="Live Monitor" subtitle="Keep an eye on Snoopy" /><ModeSwitch/><ModeSwitch/>
+        <ScreenIntro title="Live Monitor" subtitle="Keep an eye on Snoopy" /><ModeSwitch/>
         <Text style={styles.sub}>Raspberry Pi 4 camera · connection pending</Text>
 
         <CameraFeed key={key} isOffline onRefresh={() => setKey((k) => k + 1)} />
