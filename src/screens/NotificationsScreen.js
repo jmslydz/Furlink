@@ -4,7 +4,6 @@ import {COLORS, SIZES} from '../constants/theme';
 import ScreenIntro from '../components/ScreenIntro';
 import ModeSwitch from '../components/ModeSwitch';
 import {useMode} from '../context/ModeContext';
-import {useMode} from '../context/ModeContext';
 import NotificationItem from '../components/NotificationItem';
 
 const FILTERS = [
@@ -17,7 +16,6 @@ const FILTERS = [
 ];
 
 const NotificationsScreen = () => {
-  const {isDemo}=useMode();
   const {isDemo}=useMode();
   const [filter, setFilter] = useState('all');
   const [notifications, setNotifications] = useState([
