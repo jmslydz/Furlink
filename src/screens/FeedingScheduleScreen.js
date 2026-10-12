@@ -4,14 +4,11 @@ import {COLORS, SIZES} from '../constants/theme';
 import ScreenIntro from '../components/ScreenIntro';
 import ModeSwitch from '../components/ModeSwitch';
 import {useMode} from '../context/ModeContext';
-import ModeSwitch from '../components/ModeSwitch';
-import {useMode} from '../context/ModeContext';
 import ScheduleCard from '../components/ScheduleCard';
 
 const DAYS_SHORT = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
 
 const FeedingScheduleScreen = () => {
-  const {isDemo}=useMode();
   const {isDemo}=useMode();
   const [schedules, setSchedules] = useState([
     {id: '1', time: '07:00 AM', amount: 1.5, days: [1, 2, 3, 4, 5], enabled: true},
